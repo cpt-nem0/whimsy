@@ -1,1 +1,3 @@
-# bard-cli
+# Bard CLI
+
+A CLI for the Bard API

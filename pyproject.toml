@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "bard-cli"
+version = "0.1.0"
+description = ""
+authors = ["Rohan Yadav <rohanya.76426@gmail.com>"]
+license = "n"
+readme = "README.md"
+packages = [{include = "bard-cli"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+bardapi = "^0.1.30"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.7.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
