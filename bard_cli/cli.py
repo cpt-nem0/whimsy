@@ -1,3 +1,5 @@
+"""CLI class to handle stdin/stdout and command line arguments."""
+
 import argparse
 import importlib.metadata
 import sys
@@ -22,17 +24,31 @@ class CLI:
             ),
         )
         self.parser.add_argument(
-            "question",
-            metavar="question",
+            "-p",
+            "--prompt",
+            metavar="prompt",
             type=str,
             nargs="?",
-            help="Question to ask the Bard.",
+            help="Prompt for Bard.",
         )
         self.parser.add_argument(
-            "-s",
+            "-i",
             "--system",
             action="store_true",
             help="Include system info in the question.",
+        )
+        self.parser.add_argument(
+            "-c",
+            "--cwd",
+            action="store_true",
+            help="Include current working directory in the question.",
+        )
+        self.parser.add_argument(
+            "-s",
+            "--show",
+            action="store_true",
+            default=False,
+            help="Show the final prompt before sending it.",
         )
 
     def get_args(self):
@@ -50,3 +66,7 @@ class CLI:
     def print_answer(self, answer):
         """Print the answer to stdout."""
         print(answer)
+
+    def print_prompt(self, prompt):
+        """Print the prompt to stdout."""
+        print(prompt)

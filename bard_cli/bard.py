@@ -1,3 +1,5 @@
+"""Bard client."""
+
 from bardapi import Bard
 
 from . import config
@@ -9,3 +11,6 @@ class BardClient:
 
     def ask(self, question: str) -> str:
         return self._client.get_answer(question)
+
+    def get_answer(self, question: str) -> str:
+        return self.ask(question)["content"]
