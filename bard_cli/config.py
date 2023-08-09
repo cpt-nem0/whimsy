@@ -1,3 +1,9 @@
+"""Configuration file for bard-cli.
+
+This file contains functions for loading and updating the bard-cli configuration file.
+"""
+
+
 import json
 import os
 
@@ -7,17 +13,28 @@ CONFIG_DIRECTORY = os.path.expanduser("~/.bard-cli")
 create_directory_if_not_exists(CONFIG_DIRECTORY)
 
 
-def load_config_file():
-    oh_py_god_config = load_credentials_from_file(
+def load_config_file() -> dict:
+    """Load the bard-cli configuration file.
+
+    Returns:
+        The bard-cli configuration file.
+    """
+    bard_cli_config = load_credentials_from_file(
         os.path.join(CONFIG_DIRECTORY, "config.json")
     )
-    if oh_py_god_config is None:
+    if bard_cli_config is None:
         return {}
 
-    return oh_py_god_config
+    return bard_cli_config
 
 
-def update_config_file(config):
+def update_config_file(config: dict) -> None:
+    """Update the bard-cli configuration file.
+
+    Args:
+        config: The configuration to update the bard-cli configuration file with.
+    """
+
     with open(
         os.path.join(CONFIG_DIRECTORY, "config.json"),
         "w",
@@ -25,7 +42,12 @@ def update_config_file(config):
         json.dump(config, f)
 
 
-def _get_bard_token():
+def _get_bard_token() -> str:
+    """Get the bard token from the bard-cli configuration file.
+
+    Returns:
+        The bard token.
+    """
     config = load_config_file()
     if "bard-token" in config:
         return config["bard-token"]
