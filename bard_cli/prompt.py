@@ -6,9 +6,10 @@ import os
 class Prompt:
     """The Prompt class which is used to create a prompt for the CLI."""
 
-    def __init__(self, prompt: str, options: dict = None):
+    def __init__(self, prompt: str, stdin: str = "", options: dict = None):
         """Initiate the Prompt class with the prompt."""
         self.prompt = prompt
+        self.stdin = stdin
         self.options = options or {}
 
     def _get_system_info(self):
@@ -26,18 +27,32 @@ class Prompt:
 
         return os.popen("tree").read()
 
+    def _create_section(self, header: str, content: str):
+        """Create a section with a header and content"""
+
+        return f"\n{header}:\n{content}"
+
     def update_prompt(self):
         """Update the prompt with the system info and the cwd"""
 
         if self.options.get("system"):
-            self.prompt += f"\nSystem Info: \n {self._get_system_info()}"
+            self.prompt += self._create_section("System Info", self._get_system_info())
 
         if self.options.get("cwd"):
-            self.prompt += f"\nCurrent Working Directory: \n {self._get_cwd()}"
+            self.prompt += self._create_section(
+                "Current Working Directory",
+                self._get_cwd(),
+            )
 
         if self.options.get("cwd_tree"):
-            self.prompt += (
-                f"\nCurrent Working Directory Tree structure: \n {self._get_cwd_tree()}"
+            self.prompt += self._create_section(
+                "Current Working Directory Tree",
+                self._get_cwd_tree(),
+            )
+
+        if self.stdin:
+            self.prompt += self._create_section(
+                "STDIN (Output from last command)", self.stdin
             )
 
     def get_prompt(self):

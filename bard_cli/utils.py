@@ -44,14 +44,21 @@ def load_credentials_from_file(filename) -> dict | None:
         return None
 
 
-def color_print(message: str, color: str) -> None:
+def color_print(
+    message: str,
+    color: str,
+    attrs: list[str] = None,
+    **kwargs,
+) -> None:
     """Prints a message in the provided color on the terminal.
 
     Args:
       message: The message to print.
       color: The color to print the message in.
     """
-    colors = {
+    attrs = attrs or []
+
+    fixed_colors = {
         "red": "\033[91m",
         "green": "\033[92m",
         "yellow": "\033[93m",
@@ -61,7 +68,19 @@ def color_print(message: str, color: str) -> None:
         "white": "\033[97m",
     }
 
-    if color not in colors:
+    fixed_attrs = {
+        "bold": "\033[1m",
+        "underline": "\033[4m",
+        "italic": "\033[3m",
+    }
+
+    applied_attrs = ""
+    for attr in attrs:
+        if attr not in attrs:
+            raise ValueError("Invalid attribute: " + attr)
+        applied_attrs += fixed_attrs[attr]
+
+    if color not in fixed_colors:
         raise ValueError("Invalid color: " + color)
 
-    print(colors[color] + message + "\033[0m")
+    print(applied_attrs + fixed_colors[color] + message + "\033[0m", **kwargs)
