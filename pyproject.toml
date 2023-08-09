@@ -5,16 +5,22 @@ description = ""
 authors = ["Rohan Yadav <rohanya.76426@gmail.com>"]
 license = "n"
 readme = "README.md"
-packages = [{include = "bard-cli"}]
+packages = [{include = "bard_cli"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
 bardapi = "^0.1.30"
+poetry = "^1.5.1"
+requests = "^2.31.0"
 
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.7.0"
+ipykernel = "^6.25.1"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+bard-cli = "bard_cli.main:main"
