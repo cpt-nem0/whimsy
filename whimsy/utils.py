@@ -1,4 +1,4 @@
-"""Utility functions for the bard CLI."""
+"""Utility functions for the whimsy CLI."""
 
 import json
 import os

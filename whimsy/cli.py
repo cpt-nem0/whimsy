@@ -15,14 +15,14 @@ class CLI:
     def __init__(self):
         """Initiate the CLI class with the parser and the arguments."""
         self.parser = argparse.ArgumentParser(
-            description="Bard CLI - Ask me a question and I'll answer you."
+            description="Whimsy - Ask me a question and I'll answer you."
         )
         self.parser.add_argument(
             "-v",
             "--version",
             action="version",
             version="%(prog)s (version {version})".format(
-                version=importlib.metadata.version("bard_cli")
+                version=importlib.metadata.version("whimsy")
             ),
         )
         self.parser.add_argument(
@@ -31,7 +31,7 @@ class CLI:
             metavar="prompt",
             type=str,
             nargs="?",
-            help="Prompt for Bard.",
+            help="Prompt for llm.",
         )
         self.parser.add_argument(
             "-i",
@@ -46,12 +46,6 @@ class CLI:
             help="Include current working directory in the question.",
         )
         self.parser.add_argument(
-            "-s",
-            "--show",
-            action="store_true",
-            help="Show the final prompt before sending it.",
-        )
-        self.parser.add_argument(
             "-t",
             "--cwd-tree",
             action="store_true",
@@ -63,7 +57,7 @@ class CLI:
         return self.parser.parse_args()
 
     def get_stdin(self):
-        """Get stdin from the from any terminla command piped to bard-cli."""
+        """Get stdin from the from any terminla command piped to whimsy."""
 
         # check if stdin is provided
         if not sys.stdin.isatty():

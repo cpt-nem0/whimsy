@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "bard-cli"
+name = "whimsy"
 version = "0.1.0"
 description = ""
 authors = ["Rohan Yadav <rohanya.76426@gmail.com>"]
 license = "n"
 readme = "README.md"
-packages = [{include = "bard_cli"}]
+packages = [{include = "whimsy"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -23,4 +23,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-bard-cli = "bard_cli.main:main"
+whimsy = "whimsy.main:main"

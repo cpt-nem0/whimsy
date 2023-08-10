@@ -2,10 +2,11 @@
 
 from bardapi import Bard
 
-from . import config
+from .. import config
+from .base import BackendBase
 
 
-class BardClient:
+class BardClient(BackendBase):
     def __init__(self) -> None:
         self._client = Bard(token=config.BARD_TOKEN)
 

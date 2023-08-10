@@ -1,4 +1,4 @@
-from .bard import BardClient
+from .backends.bard import BardClient
 from .cli import CLI
 from .prompt import Prompt
 
@@ -22,8 +22,7 @@ def main():
         },
     )
 
-    if args.show:
-        cli.print_prompt(prompt.get_prompt())
+    cli.print_prompt(prompt.get_prompt())
 
     bard_client = BardClient()
     answer = bard_client.get_answer(args.prompt)
