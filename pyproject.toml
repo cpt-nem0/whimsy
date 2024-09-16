@@ -9,9 +9,10 @@ packages = [{include = "whimsy"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-bardapi = "^0.1.30"
 poetry = "^1.5.1"
 requests = "^2.31.0"
+google-generativeai = "^0.8.1"
+pydantic = "^2.9.1"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -1,5 +1,6 @@
-from .backends.bard import BardClient
+from .backends.gemini import GeminiClient
 from .cli import CLI
+from .config import get_gemini_credentials
 from .prompt import Prompt
 
 
@@ -8,13 +9,9 @@ def main():
     cli = CLI()
     args = cli.get_args()
 
-    if not args.prompt:
-        cli.print_error("No prompt provided.")
-        exit(1)
-
     prompt = Prompt(
         args.prompt,
-        stdin=cli.get_stdin(),
+        stdin=cli.get_stdin() if args.stdin else "",
         options={
             "system": args.system,
             "cwd": args.cwd,
@@ -24,8 +21,13 @@ def main():
 
     cli.print_prompt(prompt.get_prompt())
 
-    bard_client = BardClient()
-    answer = bard_client.get_answer(args.prompt)
+    gemini_creds = get_gemini_credentials()
+
+    gemini_client = GeminiClient(
+        api_key=gemini_creds.api_key, model_name=gemini_creds.llm_model
+    )
+    gemini_client.initialize()
+    answer = gemini_client.get_answer(prompt.get_prompt())
     cli.print_answer(answer)
 
 

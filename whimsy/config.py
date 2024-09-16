@@ -3,11 +3,15 @@
 This file contains functions for loading and updating the whimsy configuration file.
 """
 
-
 import json
 import os
 
-from .utils import create_directory_if_not_exists, load_credentials_from_file
+from .models import GeminiConfig
+from .utils import (
+    create_directory_if_not_exists,
+    get_user_choice_from_list,
+    load_credentials_from_file,
+)
 
 CONFIG_DIRECTORY = os.path.expanduser("~/.config/whimsy")
 create_directory_if_not_exists(CONFIG_DIRECTORY)
@@ -42,23 +46,22 @@ def update_config_file(config: dict) -> None:
         json.dump(config, f)
 
 
-def _get_bard_token() -> str:
-    """Get the bard token from the whimsy configuration file.
+def get_gemini_credentials() -> GeminiConfig:
+    from .backends.gemini import GeminiClient
 
-    Returns:
-        The bard token.
-    """
     config = load_config_file()
-    if "bard-token" in config:
-        return config["bard-token"]
+    if "gemini" in config:
+        return GeminiConfig(**config["gemini"])
 
-    token = input(
-        "Enter your Bard token (can be found in the site cookies under `__Secure-1PSID` key): "
-    )
-    config["bard-token"] = token
+    api_key = input("Enter you Gemini API key (for help: https://ai.google.dev/):")
+
+    model_options = GeminiClient.available_models()
+    model_name = get_user_choice_from_list("Select model:", model_options)
+
+    gemini_config = GeminiConfig(api_key=api_key, llm_model=model_name)
+
+    config["gemini"] = dict(gemini_config)
+
     update_config_file(config)
 
-    return token
-
-
-BARD_TOKEN = _get_bard_token()
+    return gemini_config

@@ -8,14 +8,26 @@ from .utils import color_print
 
 
 class CLI:
-    """CLI class to handle stdin/stdout and command line arguments. also have some functions to handle the commands.
-    with argparse to handle the command line arguments.
+    """
+    A command-line interface class for handling user input/output and parsing command-line arguments.
+
+    Uses argparse for argument parsing and includes various helper methods for printing
+    errors, prompts, and handling piped stdin input.
     """
 
     def __init__(self):
         """Initiate the CLI class with the parser and the arguments."""
         self.parser = argparse.ArgumentParser(
             description="Whimsy - Ask me a question and I'll answer you."
+        )
+        self._add_arguments()
+
+    def _add_arguments(self):
+        self.parser.add_argument(
+            "prompt",
+            type=str,
+            nargs="?",
+            help="Prompt for llm.",
         )
         self.parser.add_argument(
             "-v",
@@ -24,14 +36,6 @@ class CLI:
             version="%(prog)s (version {version})".format(
                 version=importlib.metadata.version("whimsy")
             ),
-        )
-        self.parser.add_argument(
-            "-p",
-            "--prompt",
-            metavar="prompt",
-            type=str,
-            nargs="?",
-            help="Prompt for llm.",
         )
         self.parser.add_argument(
             "-i",
@@ -51,10 +55,27 @@ class CLI:
             action="store_true",
             help="Include current working directory tree in the question.",
         )
+        self.parser.add_argument(
+            "-o",
+            "--stdin",
+            action="store_true",
+            help="Include the output from last ran command",
+        )
 
     def get_args(self):
         """Get the arguments from the command line and return it as a string."""
-        return self.parser.parse_args()
+        args = self.parser.parse_args()
+
+        if len(sys.argv) == 1:
+            self.print_help()
+            sys.exit(0)
+
+        if not args.prompt:
+            self.print_error("Prompt is required to ask question.")
+            self.print_help()
+            sys.exit(1)
+
+        return args
 
     def get_stdin(self):
         """Get stdin from the from any terminla command piped to whimsy."""
