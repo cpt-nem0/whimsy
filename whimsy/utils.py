@@ -84,3 +84,33 @@ def color_print(
         raise ValueError("Invalid color: " + color)
 
     print(applied_attrs + fixed_colors[color] + message + "\033[0m", **kwargs)
+
+
+def get_user_choice_from_list(message: str, choices: list[str]) -> str:
+    if len(choices) < 1:
+        return None
+
+    choices_message = "\n".join(
+        [f"[{i+1}] {choice}" for i, choice in enumerate(choices)]
+    )
+    print(message + "\n")
+    print(choices_message + "\n")
+
+    def print_invalid_input():
+        print(f"Invalid input, choice must be between [1-{len(choices)}]!!")
+
+    while True:
+        users_choice = input(f"enter you choice [1-{len(choices)}]: ")
+
+        try:
+            users_choice = int(users_choice)
+        except ValueError:
+            print_invalid_input()
+            continue
+
+        if users_choice > len(choices) or users_choice <= 0:
+            print_invalid_input()
+        else:
+            break
+
+    return choices[users_choice - 1]
